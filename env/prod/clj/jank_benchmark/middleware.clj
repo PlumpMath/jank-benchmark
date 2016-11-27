@@ -12,6 +12,7 @@
                          (assoc :proxy true)
                          (assoc-in [:static :resources] "/")
                          (assoc-in [:security :hsts] false)
+                         (assoc-in [:security :anti-forgery] false)
                          (assoc-in [:security :ssl-redirect] false)))
       wrap-json-response
       gzip/wrap-gzip))

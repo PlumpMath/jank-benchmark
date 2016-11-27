@@ -1,7 +1,7 @@
 (ns jank-benchmark.handler
   (:require [jank-benchmark.middleware :refer [wrap-middleware]]
             [ring.util.response :refer [response]]
-            [compojure.core :refer [GET defroutes]]
+            [compojure.core :refer [GET POST defroutes]]
             [compojure.route :refer [not-found resources]]
             [hiccup.page :refer [include-js include-css html5]]
             [config.core :refer [env]]
@@ -41,6 +41,8 @@
   (GET "/" [] (loading-page))
   (GET "/about" [] (loading-page))
   (GET "/api/stats" [] (response data))
+  (POST "/api/run" {body :body} (response (json/read-str (slurp body)
+                                                         :key-fn keyword)))
   (resources "/")
   (not-found "Not Found"))
 
