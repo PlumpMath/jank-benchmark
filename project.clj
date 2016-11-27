@@ -4,8 +4,7 @@
   :license {:name "jank license"
             :url "https://upload.jeaye.com/jank-license"}
 
-  :dependencies [[org.clojure/clojure "1.8.0"]
-                 ; Frontend
+  :dependencies [; Frontend
                  [org.clojure/clojurescript "1.9.229" :scope "provided"]
                  [reagent "0.6.0"]
                  [reagent-utils "0.2.0"]
@@ -14,6 +13,7 @@
                  [venantius/accountant "0.1.7" :exclusions [org.clojure/tools.reader]]
 
                  ; Backend
+                 [org.clojure/clojure "1.8.0"]
                  [ring "1.5.0"]
                  [ring-server "0.4.0"]
                  [ring/ring-defaults "0.2.1"]
