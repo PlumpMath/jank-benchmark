@@ -3,8 +3,7 @@
               [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]
               [accountant.core :as accountant]
-              [cljsjs.recharts]
-              [jank.benchmark.main]))
+              [cljsjs.recharts]))
 
 ;; -------------------------
 ;; Views
