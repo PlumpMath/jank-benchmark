@@ -31,3 +31,9 @@
 (defn stop-server []
   (.stop @server)
   (reset! server nil))
+
+(defn restart-server []
+  (use 'jank-benchmark.repl :reload)
+  (when @server
+    (stop-server))
+  (start-server))
