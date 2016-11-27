@@ -1,5 +1,5 @@
 (ns jank-benchmark.middleware
-  (:require [ring.middleware.defaults :refer [site-defaults wrap-defaults]]))
+  (:require [ring.middleware.defaults :refer [secure-site-defaults wrap-defaults]]))
 
 (defn wrap-middleware [handler]
-  (wrap-defaults handler site-defaults))
+  (wrap-defaults handler secure-site-defaults))
