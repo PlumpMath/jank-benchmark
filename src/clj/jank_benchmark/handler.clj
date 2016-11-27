@@ -3,7 +3,8 @@
             [compojure.route :refer [not-found resources]]
             [hiccup.page :refer [include-js include-css html5]]
             [jank-benchmark.middleware :refer [wrap-middleware]]
-            [config.core :refer [env]]))
+            [config.core :refer [env]]
+            [clojure.data.json :as json]))
 
 (def mount-target
   [:div#app
@@ -38,7 +39,7 @@
 (defroutes app-routes
   (GET "/" [] (loading-page))
   (GET "/about" [] (loading-page))
-  (GET "/api/stats" [] data)
+  (GET "/api/stats" [] (json/write-str data))
   (resources "/")
   (not-found "Not Found"))
 
