@@ -26,10 +26,10 @@
      mount-target
      (include-js "/js/app.js")]))
 
-(defroutes routes
+(defroutes app-routes
   (GET "/" [] (loading-page))
   (GET "/about" [] (loading-page))
   (resources "/")
   (not-found "Not Found"))
 
-(def app (wrap-middleware #'routes))
+(def app (wrap-middleware #'app-routes))
