@@ -3,7 +3,10 @@
               [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]
               [accountant.core :as accountant]
-              [cljsjs.recharts]))
+              [cljsjs.recharts]
+              [cljs-http.client :as http]
+              [cljs.core.async :refer [<!]])
+    (:require-macros [cljs.core.async.macros :refer [go]]))
 
 ;; -------------------------
 ;; Views
@@ -52,6 +55,12 @@
 (defn mount-root []
   (reagent/render [current-page] (.getElementById js/document "app")))
 
+(defn get-data! []
+  (go
+    (let [reply (<! (http/get "/api/stats"))
+          reply-json (.parse js/JSON (:body reply))]
+      (println reply-json))))
+
 (defn init! []
   (accountant/configure-navigation!
     {:nav-handler
@@ -61,4 +70,5 @@
      (fn [path]
        (secretary/locate-route path))})
   (accountant/dispatch-current!)
+  (get-data!)
   (mount-root))

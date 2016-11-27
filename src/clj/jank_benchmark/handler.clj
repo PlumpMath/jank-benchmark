@@ -38,7 +38,7 @@
 (defroutes app-routes
   (GET "/" [] (loading-page))
   (GET "/about" [] (loading-page))
-  (GET "/stats" [] data)
+  (GET "/api/stats" [] data)
   (resources "/")
   (not-found "Not Found"))
 

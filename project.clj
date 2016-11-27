@@ -8,6 +8,7 @@
                  [org.clojure/clojurescript "1.9.229" :scope "provided"]
                  [reagent "0.6.0"]
                  [reagent-utils "0.2.0"]
+                 [cljs-http "0.1.39"]
                  [cljsjs/recharts "0.13.3-0"]
                  [secretary "1.2.3"]
                  [venantius/accountant "0.1.7" :exclusions [org.clojure/tools.reader]]
