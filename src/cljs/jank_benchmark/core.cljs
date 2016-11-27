@@ -5,7 +5,8 @@
               [accountant.core :as accountant]
               [cljsjs.recharts]
               [cljs-http.client :as http]
-              [cljs.core.async :refer [<!]])
+              [cljs.core.async :refer [<!]]
+              [clojure.pprint :refer [pprint]])
     (:require-macros [cljs.core.async.macros :refer [go]]))
 
 ;; -------------------------
@@ -55,11 +56,19 @@
 (defn mount-root []
   (reagent/render [current-page] (.getElementById js/document "app")))
 
+(defn keywordify [m]
+  (cond
+    (map? m) (into {} (for [[k v] m] [(keyword k) (keywordify v)]))
+    (coll? m) (vec (map keywordify m))
+    :else m))
+
 (defn get-data! []
   (go
-    (let [reply (<! (http/get "/api/stats"))
-          reply-json (.parse js/JSON (:body reply))]
-      (println reply-json))))
+    (let [reply-js (<! (http/get "/api/stats"))
+          reply (-> (js/JSON.parse (:body reply-js))
+                    js->clj
+                    keywordify)]
+      (pprint reply))))
 
 (defn init! []
   (accountant/configure-navigation!
