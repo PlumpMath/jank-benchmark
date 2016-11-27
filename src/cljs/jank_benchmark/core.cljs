@@ -13,6 +13,7 @@
 ;; Views
 
 (def data (reagent/atom {}))
+(def poll-rate 1000) ; Milliseconds
 
 (defn home-page []
   [:> js/Recharts.LineChart {:width 1000
@@ -61,7 +62,8 @@
           reply (-> (js/JSON.parse (:body reply-js))
                     js->clj
                     keywordify)]
-      (reset! data reply))))
+      (when (not= reply @data)
+        (reset! data reply)))))
 
 (defn init! []
   (accountant/configure-navigation!
@@ -73,4 +75,5 @@
        (secretary/locate-route path))})
   (accountant/dispatch-current!)
   (get-data!)
+  (js/setInterval get-data! poll-rate)
   (mount-root))
