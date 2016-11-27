@@ -1,7 +1,7 @@
 (ns jank-benchmark.middleware
   (:require [ring.middleware
              [defaults :refer [secure-site-defaults wrap-defaults]]
-             [json :refer [wrap-json-response wrap-json-body]]
+             [json :refer [wrap-json-response]]
              [gzip :as gzip]]))
 
 (defn wrap-middleware [handler]
@@ -14,5 +14,4 @@
                          (assoc-in [:security :hsts] false)
                          (assoc-in [:security :ssl-redirect] false)))
       wrap-json-response
-      wrap-json-body
       gzip/wrap-gzip))

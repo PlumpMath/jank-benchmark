@@ -1,8 +1,9 @@
 (ns jank-benchmark.handler
-  (:require [compojure.core :refer [GET defroutes]]
+  (:require [jank-benchmark.middleware :refer [wrap-middleware]]
+            [ring.util.response :refer [response]]
+            [compojure.core :refer [GET defroutes]]
             [compojure.route :refer [not-found resources]]
             [hiccup.page :refer [include-js include-css html5]]
-            [jank-benchmark.middleware :refer [wrap-middleware]]
             [config.core :refer [env]]
             [clojure.data.json :as json]))
 
@@ -39,7 +40,7 @@
 (defroutes app-routes
   (GET "/" [] (loading-page))
   (GET "/about" [] (loading-page))
-  (GET "/api/stats" [] data)
+  (GET "/api/stats" [] (response data))
   (resources "/")
   (not-found "Not Found"))
 
