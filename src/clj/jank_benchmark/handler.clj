@@ -44,6 +44,7 @@
 
 (defn run [request]
   ; TODO: Only run if master branch updated
+  ; TODO: Don't run multiple times for same commit
   (let [commit (:commit request)
         sh-result (clojure.java.shell/sh
                  "lein" "with-profile" "benchmark" "trampoline" "run"
