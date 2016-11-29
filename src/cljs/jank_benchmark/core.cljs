@@ -15,7 +15,10 @@
 (def data (reagent/atom {}))
 (def poll-rate 1000) ; Milliseconds
 
-(defn extract [m ks]
+(defn extract
+  "Extract from the given map each pair for the given keys.
+   Example: (= (extract {:a 0 :b 1 :c 2 :d 3} [:a :d]) {:a 0 :d 3})"
+  [m ks]
   (loop [ret {}
          ks' ks]
     (let [k (keyword (first ks'))]
