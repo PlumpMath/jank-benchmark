@@ -1,0 +1,3 @@
+[submodule "lib/jank"]
+	path = lib/jank
+	url = https://github.com/jeaye/jank.git
