@@ -5,6 +5,7 @@
             [prone.middleware :refer [wrap-exceptions]]
             [ring.middleware.reload :refer [wrap-reload]]))
 
+; TODO: Share with prod
 (defn wrap-middleware [handler]
   (-> handler
       (wrap-defaults (-> secure-site-defaults
