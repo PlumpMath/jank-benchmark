@@ -37,12 +37,22 @@
            {:name "Jul 1" :uv 3490 :pv 4300 :amt 2100}
            {:name "Aug 1" :uv 6490 :pv 5300 :amt 2100}])
 
+(defn run [data]
+  ; TODO: Only run if master branch updated
+  (let [commit (:commit data)
+        sh-result (clojure.java.shell/sh
+                 "lein" "with-profile" "benchmark" "trampoline" "run"
+                 :dir "lib/jank")
+        data (read-string (:out sh-result))]
+    ; TODO: Check out the right commit (fetch, checkout)
+    data))
+
 (defroutes app-routes
   (GET "/" [] (loading-page))
   (GET "/about" [] (loading-page))
   (GET "/api/stats" [] (response data))
-  (POST "/api/run" {body :body} (response (json/read-str (slurp body)
-                                                         :key-fn keyword)))
+  (POST "/api/run" {body :body} (response (run (json/read-str (slurp body)
+                                                              :key-fn keyword))))
   (resources "/")
   (not-found "Not Found"))
 
