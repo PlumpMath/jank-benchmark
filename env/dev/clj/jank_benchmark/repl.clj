@@ -18,7 +18,6 @@
       (wrap-file-info)))
 
 (defn start-server
-  "used for starting the server in development mode from REPL"
   [& [port]]
   (let [port (if port (Integer/parseInt port) 3000)]
     (reset! server
