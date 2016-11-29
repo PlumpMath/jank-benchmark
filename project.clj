@@ -86,7 +86,8 @@
                                   [figwheel-sidecar "0.5.8"]
                                   [org.clojure/tools.nrepl "0.2.12"]
                                   [com.cemerick/piggieback "0.2.2-SNAPSHOT"]
-                                  [pjstadig/humane-test-output "0.8.1"]]
+                                  [pjstadig/humane-test-output "0.8.1"]
+                                  [me.raynes/fs "1.4.6"]]
 
                    :source-paths ["env/dev/clj"]
                    :plugins [[lein-figwheel "0.5.8"]]

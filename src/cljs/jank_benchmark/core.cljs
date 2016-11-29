@@ -16,17 +16,19 @@
 (def poll-rate 1000) ; Milliseconds
 
 (defn home-page []
-  [:> js/Recharts.LineChart {:width 1000
-                             :height 700
-                             :margin {:top 5, :right 30, :left 20, :bottom 5}
-                             :data @data}
-   [:> js/Recharts.XAxis {:dataKey "name"}]
-   [:> js/Recharts.YAxis]
-   [:> js/Recharts.CartesianGrid {:strokeDasharray "3 3"}]
-   [:> js.Recharts.Tooltip]
-   [:> js/Recharts.Legend]
-   [:> js/Recharts.Line {:type "monotone" :dataKey "pv" :stroke "#8884d8" :activeDot {:r 8}}]
-   [:> js/Recharts.Line {:type "monotone" :dataKey "uv" :stroke "#82ca9d"}]])
+  (let [results (map (comp first :results) @data)]
+    [:> js/Recharts.LineChart {:width 1000
+                               :height 700
+                               :margin {:top 5, :right 30, :left 20, :bottom 5}
+                               :data results}
+     ;[:> js/Recharts.XAxis {:dataKey "name"}]
+     [:> js/Recharts.XAxis]
+     [:> js/Recharts.YAxis]
+     [:> js/Recharts.CartesianGrid {:strokeDasharray "3 3"}]
+     [:> js.Recharts.Tooltip]
+     [:> js/Recharts.Legend]
+     [:> js/Recharts.Line {:type "monotone" :dataKey "foo" :stroke "#8884d8" :activeDot {:r 8}}]
+     [:> js/Recharts.Line {:type "monotone" :dataKey "bar" :stroke "#82ca9d"}]]))
 
 (defn about-page []
   [:div [:h2 "About jank-benchmark!"]
