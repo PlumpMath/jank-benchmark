@@ -11,8 +11,8 @@
 (def violet    "#6c71c4") (def blue      "#268bd2")
 (def cyan      "#2aa198") (def green     "#859900")
 
-(def content-background-color base03)
-(def content-color base0)
+(def content-background-color base3)
+(def content-color base00)
 (def content-font-size "1.5em")
 (def status-color green)
 (def status-error-color red)

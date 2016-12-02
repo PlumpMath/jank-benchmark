@@ -32,37 +32,36 @@
                (rest ks'))))))
 
 (defn home-page []
-  (def layout [{:i "a" :x 0 :y 0 :w 1 :h 2 :static true},
-               {:i "b" :x 1 :y 0 :w 3 :h 2 :minW 2, :maxW 4},
-               {:i "c" :x 4 :y 0 :w 1 :h 2}])
-  [:> js/ReactGridLayout {:className "layout"
-                          :layout layout
-                          :cols 12
-                          :rowHeight 30
-                          :width 1200}
-   [:div {:key "a"} "a"]
-   [:div {:key "b"} "b"]
-   [:div {:key "c"} "c"]])
-  (comment let [results (map :results @data)]
-    [:div
-     (for [v views]
-       (let [points (map #(extract % v) results)]
-         ; TODO: Provide CSS to fit these dynamically
-         [:> js/Recharts.LineChart {:width 1000
-                                    :height 700
-                                    :margin {:top 5 :right 30
-                                             :left 20 :bottom 5}
-                                    :data points}
-          ;[:> js/Recharts.XAxis {:dataKey "name"}]
-          [:> js/Recharts.XAxis]
-          [:> js/Recharts.YAxis]
-          [:> js/Recharts.CartesianGrid {:strokeDasharray "3 3"}]
-          [:> js.Recharts.Tooltip]
-          [:> js/Recharts.Legend]
-          (for [k v]
-            [:> js/Recharts.Line {:type "monotone"
-                                  :dataKey k
-                                  :activeDot {:r 8}}])]))])
+  (let [results (map :results @data)
+        layout (map-indexed (fn [i v]
+                              {:i (str i)
+                               :x 0 :y 0
+                               :w 500 :h 300})
+                            views)
+        _ (pprint layout)]
+    ; TODO: width is fucked
+    [:> (js/ReactGridLayout.WidthProvider js/ReactGridLayout) {:className "layout"
+                                                               :layout layout
+                                                               :cols 5}
+     (map-indexed
+       (fn [i v]
+         [:div {:key (str i)}
+          (let [points (map #(extract % v) results)]
+            [:> js/Recharts.LineChart {:width 500 :height 300
+                                       :margin {:top 5 :right 30
+                                                :left 20 :bottom 5}
+                                       :data points}
+             ;[:> js/Recharts.XAxis {:dataKey "name"}]
+             [:> js/Recharts.XAxis]
+             [:> js/Recharts.YAxis]
+             [:> js/Recharts.CartesianGrid {:strokeDasharray "3 3"}]
+             [:> js.Recharts.Tooltip]
+             [:> js/Recharts.Legend]
+             (for [k v]
+               [:> js/Recharts.Line {:type "monotone"
+                                     :dataKey k
+                                     :activeDot {:r 8}}])])])
+       views)]))
 
 (defn about-page []
   [:div [:h2 "About jank-benchmark!"]
