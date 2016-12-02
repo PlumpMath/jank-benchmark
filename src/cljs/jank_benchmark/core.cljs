@@ -1,10 +1,13 @@
 (ns jank-benchmark.core
-    (:require [reagent.core :as reagent :refer [atom]]
+    (:require [jank-benchmark
+               [poll :as poll]]
+              [reagent.core :as reagent :refer [atom]]
               [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]
               [accountant.core :as accountant]
-              [cljsjs.recharts]
-              [cljsjs.react-grid-layout]
+              [cljsjs
+               [recharts]
+               [react-grid-layout]]
               [cljs-http.client :as http]
               [cljs.core.async :refer [<!]]
               [clojure.pprint :refer [pprint]])
@@ -13,7 +16,6 @@
 ;; -------------------------
 ;; Views
 
-(def data (reagent/atom {}))
 (def poll-rate 1000) ; Milliseconds
 
 ; TODO: Allow interactive tweaking of this (put it in a ratom)
@@ -32,7 +34,7 @@
                (rest ks'))))))
 
 (defn home-page []
-  (let [results (map :results @data)
+  (let [results (map :results @poll/data)
         layout (map-indexed (fn [i v]
                               {:i (str i)
                                :x 0 :y 0
@@ -85,21 +87,6 @@
 (defn mount-root []
   (reagent/render [current-page] (.getElementById js/document "app")))
 
-(defn keywordify [m]
-  (cond
-    (map? m) (into {} (for [[k v] m] [(keyword k) (keywordify v)]))
-    (coll? m) (vec (map keywordify m))
-    :else m))
-
-(defn get-data! []
-  (go
-    (let [reply-js (<! (http/get "/api/stats"))
-          reply (-> (js/JSON.parse (:body reply-js))
-                    js->clj
-                    keywordify)]
-      (when (not= reply @data)
-        (reset! data reply)))))
-
 (defn init! []
   (accountant/configure-navigation!
     {:nav-handler
@@ -109,6 +96,5 @@
      (fn [path]
        (secretary/locate-route path))})
   (accountant/dispatch-current!)
-  (get-data!)
-  (js/setInterval get-data! poll-rate)
+  (poll/init!)
   (mount-root))
