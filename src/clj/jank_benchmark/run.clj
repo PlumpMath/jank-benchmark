@@ -42,7 +42,7 @@
         sh-result (sh "lein" "with-profile" "benchmark" "trampoline" "run"
                       :dir jank-dir)
         data (read-string (:out sh-result))]
-    (swap! current-data conj data)
-    (swap! current-data (partial sort-by :commit-timestamp))
+    (swap! current-data #(->> (conj % data)
+                              (sort-by :commit-timestamp)))
     (write-data @current-data)
     data))
