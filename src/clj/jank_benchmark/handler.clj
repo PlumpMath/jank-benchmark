@@ -47,6 +47,7 @@
 (def jank-dir (str lib-dir "jank/"))
 
 (defn checkout [commit]
+  ; TODO: spec/conform commit
   (assert (re-matches #"^[a-zA-Z0-9]{7,40}$" commit) "invalid commit format")
   (when (not (fs/exists? jank-dir))
     (fs/mkdir lib-dir)

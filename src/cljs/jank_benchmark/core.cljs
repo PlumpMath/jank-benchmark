@@ -15,6 +15,7 @@
 (def data (reagent/atom {}))
 (def poll-rate 1000) ; Milliseconds
 
+; TODO: Allow interactive tweaking of this (put it in a ratom)
 (def views [[:tests] [:fib-compile :fib-run-40]])
 
 (defn extract
@@ -34,7 +35,7 @@
     [:div
      (for [v views]
        (let [points (map #(extract % v) results)]
-         (pprint points)
+         ; TODO: Provide CSS to fit these dynamically
          [:> js/Recharts.LineChart {:width 1000
                                     :height 700
                                     :margin {:top 5 :right 30
