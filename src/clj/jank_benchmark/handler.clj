@@ -9,13 +9,6 @@
             [hiccup.page :refer [include-js include-css html5]]
             [clojure.data.json :as json]))
 
-(def mount-target
-  [:div#app
-   [:h3 "ClojureScript has not been compiled!"]
-   [:p "please run "
-    [:b "lein figwheel"]
-    " in order to start the compiler"]])
-
 (defn head []
   [:head
    [:meta {:charset "utf-8"}]
@@ -27,7 +20,8 @@
   (html5
     (head)
     [:body {:class "body-container"}
-     mount-target
+     [:div#app
+      [:h3 "Loading..."]]
      (include-js "/js/app.js")]))
 
 (defroutes app-routes
