@@ -1,8 +1,11 @@
 (ns jank-benchmark.handler
-  (:require [jank-benchmark.middleware :refer [wrap-middleware]]
+  (:require [jank-benchmark
+             [middleware :refer [wrap-middleware]]
+             [css :as css]]
             [ring.util.response :refer [response]]
-            [compojure.core :refer [GET POST defroutes]]
-            [compojure.route :refer [not-found resources]]
+            [compojure
+             [core :refer [GET POST defroutes]]
+             [route :refer [not-found resources]]]
             [hiccup.page :refer [include-js include-css html5]]
             [config.core :refer [env]]
             [me.raynes.fs :as fs]
@@ -20,7 +23,7 @@
    [:meta {:charset "utf-8"}]
    [:meta {:name "viewport"
            :content "width=device-width, initial-scale=1"}]
-   (include-css (if (env :dev) "/css/site.css" "/css/site.min.css"))])
+   [:style (css/main)]])
 
 (defn loading-page []
   (html5

@@ -22,6 +22,7 @@
                  [bk/ring-gzip "0.1.1"]
                  [compojure "1.5.1"]
                  [hiccup "1.0.5"]
+                 [garden "1.3.1"]
                  [yogthos/config "0.8"]]
 
   :plugins [[lein-environ "1.0.2"]
