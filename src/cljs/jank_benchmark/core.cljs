@@ -15,6 +15,8 @@
 (def data (reagent/atom {}))
 (def poll-rate 1000) ; Milliseconds
 
+(def views [[:tests] [:fib-compile :fib-40]])
+
 (defn extract
   "Extract from the given map each pair for the given keys.
    Example: (= (extract {:a 0 :b 1 :c 2 :d 3} [:a :d]) {:a 0 :d 3})"
@@ -28,28 +30,26 @@
                (rest ks'))))))
 
 (defn home-page []
-  (let [results (map :results @data)
-        views (map :views @data)]
+  (let [results (map :results @data)]
     [:div
-     (when (not-empty views)
-       (for [v (first views)]
-         (let [points (map #(extract % v) results)] ; TODO: pull views out of results
-           (pprint points)
-           [:> js/Recharts.LineChart {:width 1000
-                                      :height 700
-                                      :margin {:top 5 :right 30
-                                               :left 20 :bottom 5}
-                                      :data points}
-            ;[:> js/Recharts.XAxis {:dataKey "name"}]
-            [:> js/Recharts.XAxis]
-            [:> js/Recharts.YAxis]
-            [:> js/Recharts.CartesianGrid {:strokeDasharray "3 3"}]
-            [:> js.Recharts.Tooltip]
-            [:> js/Recharts.Legend]
-            (for [k v]
-              [:> js/Recharts.Line {:type "monotone"
-                                    :dataKey k
-                                    :activeDot {:r 8}}])])))]))
+     (for [v views]
+       (let [points (map #(extract % v) results)]
+         (pprint points)
+         [:> js/Recharts.LineChart {:width 1000
+                                    :height 700
+                                    :margin {:top 5 :right 30
+                                             :left 20 :bottom 5}
+                                    :data points}
+          ;[:> js/Recharts.XAxis {:dataKey "name"}]
+          [:> js/Recharts.XAxis]
+          [:> js/Recharts.YAxis]
+          [:> js/Recharts.CartesianGrid {:strokeDasharray "3 3"}]
+          [:> js.Recharts.Tooltip]
+          [:> js/Recharts.Legend]
+          (for [k v]
+            [:> js/Recharts.Line {:type "monotone"
+                                  :dataKey k
+                                  :activeDot {:r 8}}])]))]))
 
 (defn about-page []
   [:div [:h2 "About jank-benchmark!"]
