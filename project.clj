@@ -19,6 +19,7 @@
                  [ring-server "0.4.0"]
                  [ring/ring-defaults "0.2.1"]
                  [ring/ring-json "0.4.0"]
+                 [bk/ring-gzip "0.1.1"]
                  [compojure "1.5.1"]
                  [hiccup "1.0.5"]
                  [yogthos/config "0.8"]]
