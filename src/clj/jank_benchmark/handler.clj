@@ -6,7 +6,8 @@
             [hiccup.page :refer [include-js include-css html5]]
             [config.core :refer [env]]
             [me.raynes.fs :as fs]
-            [clojure.data.json :as json]))
+            [clojure.data.json :as json])
+  (:use [clojure.java.shell :only [sh]]))
 
 (def mount-target
   [:div#app
@@ -50,23 +51,19 @@
   (when (not (fs/exists? jank-dir))
     (fs/mkdir lib-dir)
     (println "Cloning jank...")
-    (clojure.java.shell/sh
-      "git" "clone" "https://github.com/jeaye/jank.git"
-      :dir lib-dir))
-  (clojure.java.shell/sh "git" "fetch" "origin"
-                         :dir jank-dir)
-  (clojure.java.shell/sh "git" "checkout" commit
-                         :dir jank-dir))
+    (sh "git" "clone" "https://github.com/jeaye/jank.git"
+                           :dir lib-dir))
+  (sh "git" "fetch" "origin" :dir jank-dir)
+  (sh "git" "checkout" commit :dir jank-dir))
 
 (defn run [request]
   ; TODO: Only run if master branch updated
   ; TODO: Don't run multiple times for same commit
   (let [commit (:commit request)
-        sh-result (clojure.java.shell/sh
-                 "lein" "with-profile" "benchmark" "trampoline" "run"
-                 :dir jank-dir)
+        _ (checkout commit)
+        sh-result (sh "lein" "with-profile" "benchmark" "trampoline" "run"
+                      :dir jank-dir)
         data (read-string (:out sh-result))]
-    ; TODO: Check out the right commit (fetch, checkout)
     (swap! current-data conj data)
     (swap! current-data (partial sort-by :commit-timestamp))
     (write-data @current-data)
