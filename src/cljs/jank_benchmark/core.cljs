@@ -15,7 +15,7 @@
 (def data (reagent/atom {}))
 (def poll-rate 1000) ; Milliseconds
 
-(def views [[:tests] [:fib-compile :fib-40]])
+(def views [[:tests] [:fib-compile :fib-run-40]])
 
 (defn extract
   "Extract from the given map each pair for the given keys.
