@@ -9,7 +9,6 @@
               [cljsjs
                [recharts]
                [react-grid-layout]]
-              [cljs-http.client :as http]
               [cljs.core.async :refer [<!]]
               [clojure.pprint :refer [pprint]])
     (:require-macros [cljs.core.async.macros :refer [go]]))
