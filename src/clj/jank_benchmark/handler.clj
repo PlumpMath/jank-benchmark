@@ -6,8 +6,7 @@
             [hiccup.page :refer [include-js include-css html5]]
             [config.core :refer [env]]
             [me.raynes.fs :as fs]
-            [clojure.data.json :as json])
-  (:use [clojure.java.shell :only [sh]]))
+            [clojure.data.json :as json]))
 
 (def mount-target
   [:div#app
@@ -45,6 +44,12 @@
 
 (def lib-dir "lib/")
 (def jank-dir (str lib-dir "jank/"))
+
+(defn sh [& args]
+  (let [result (apply clojure.java.shell/sh args)]
+    (assert (zero? (:exit result))
+            (str "error " (:exit result) ": " args))
+    result))
 
 (defn checkout [commit]
   ; TODO: spec/conform commit
