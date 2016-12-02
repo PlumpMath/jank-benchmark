@@ -1,6 +1,7 @@
 (ns jank-benchmark.core
     (:require [jank-benchmark
-               [poll :as poll]]
+               [poll :as poll]
+               [util :as util]]
               [reagent.core :as reagent :refer [atom]]
               [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]
@@ -19,18 +20,6 @@
 ; TODO: Allow interactive tweaking of this (put it in a ratom)
 (def views [[:tests] [:fib-compile :fib-run-40]])
 
-(defn extract
-  "Extract from the given map each pair for the given keys.
-   Example: (= (extract {:a 0 :b 1 :c 2 :d 3} [:a :d]) {:a 0 :d 3})"
-  [m ks]
-  (loop [ret {}
-         ks' ks]
-    (let [k (keyword (first ks'))]
-      (if (empty? ks')
-        ret
-        (recur (assoc ret k (get m k))
-               (rest ks'))))))
-
 (defn home-page []
   (let [results (map :results @poll/data)
         layout (map-indexed (fn [i v]
@@ -46,7 +35,7 @@
      (map-indexed
        (fn [i v]
          [:div {:key (str i)}
-          (let [points (map #(extract % v) results)]
+          (let [points (map #(util/extract % v) results)]
             [:> js/Recharts.LineChart {:width 500 :height 300
                                        :margin {:top 5 :right 30
                                                 :left 20 :bottom 5}

@@ -61,7 +61,7 @@
               :libs ["src/js"]
               :pretty-print  false}}
             :app
-            {:source-paths ["src/cljs" "env/dev/cljs"]
+            {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
              :compiler
              {:main "jank-benchmark.dev"
               :asset-path "/js/out"

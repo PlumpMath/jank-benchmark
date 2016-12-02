@@ -1,21 +1,17 @@
 (ns jank-benchmark.poll
-    (:require [reagent.core :as reagent :refer [atom]]))
+  (:require [jank-benchmark
+             [util :as util]]
+            [reagent.core :as reagent :refer [atom]]))
 
 (def data (reagent/atom {}))
 (def rate-ms 1000)
-
-(defn keywordify [m]
-  (cond
-    (map? m) (into {} (for [[k v] m] [(keyword k) (keywordify v)]))
-    (coll? m) (vec (map keywordify m))
-    :else m))
 
 (defn get-data! []
   (go
     (let [reply-js (<! (http/get "/api/stats"))
           reply (-> (js/JSON.parse (:body reply-js))
                     js->clj
-                    keywordify)]
+                    util/keywordify)]
       (when (not= reply @data)
         (reset! data reply)))))
 
