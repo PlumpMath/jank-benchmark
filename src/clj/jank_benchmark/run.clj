@@ -18,7 +18,7 @@
 (defn write-data [data]
   (spit data-file (pr-str data)))
 
-(defn sh [& args]
+(defn sh! [& args]
   (let [result (apply clojure.java.shell/sh args)]
     (assert (zero? (:exit result))
             (str "error " (:exit result) ": " args))
@@ -30,18 +30,18 @@
   (when (not (fs/exists? jank-dir))
     (fs/mkdir lib-dir)
     (println "Cloning jank...")
-    (sh "git" "clone" "https://github.com/jeaye/jank.git"
-        :dir lib-dir))
-  (sh "git" "fetch" "origin" :dir jank-dir)
-  (sh "git" "checkout" commit :dir jank-dir))
+    (sh! "git" "clone" "https://github.com/jeaye/jank.git"
+         :dir lib-dir))
+  (sh! "git" "fetch" "origin" :dir jank-dir)
+  (sh! "git" "checkout" commit :dir jank-dir))
 
 (defn run! [request]
   ; TODO: Only run if master branch updated
   ; TODO: Don't run multiple times for same commit
   (let [commit (:commit request)
         _ (checkout! commit)
-        sh-result (sh "lein" "with-profile" "benchmark" "trampoline" "run"
-                      :dir jank-dir)
+        sh-result (sh! "lein" "with-profile" "benchmark" "trampoline" "run"
+                       :dir jank-dir)
         data (read-string (:out sh-result))]
     (swap! current-data #(->> (conj % data)
                               (sort-by :commit-timestamp)))
