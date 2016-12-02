@@ -10,6 +10,7 @@
                  [reagent-utils "0.2.0"]
                  [cljs-http "0.1.39"]
                  [cljsjs/recharts "0.13.3-0"]
+                 [cljsjs/react-grid-layout "0.13.7-0"]
                  [secretary "1.2.3"]
                  [venantius/accountant "0.1.7" :exclusions [org.clojure/tools.reader]]
 
@@ -43,7 +44,7 @@
    [:cljsbuild :builds :app :compiler :output-dir]
    [:cljsbuild :builds :app :compiler :output-to]]
 
-  :source-paths ["src/clj" "src/cljc"]
+  :source-paths ["src/clj"]
   :resource-paths ["resources" "target/cljsbuild"]
 
   :minify-assets
@@ -52,7 +53,7 @@
 
   :cljsbuild
   {:builds {:min
-            {:source-paths ["src/cljs" "src/cljc" "env/prod/cljs"]
+            {:source-paths ["src/cljs" "env/prod/cljs"]
              :compiler
              {:output-to "target/cljsbuild/public/js/app.js"
               :output-dir "target/uberjar"
@@ -60,7 +61,7 @@
               :libs ["src/js"]
               :pretty-print  false}}
             :app
-            {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
+            {:source-paths ["src/cljs" "env/dev/cljs"]
              :compiler
              {:main "jank-benchmark.dev"
               :asset-path "/js/out"
