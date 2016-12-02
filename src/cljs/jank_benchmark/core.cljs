@@ -16,8 +16,6 @@
 ;; -------------------------
 ;; Views
 
-(def poll-rate 1000) ; Milliseconds
-
 ; TODO: Allow interactive tweaking of this (put it in a ratom)
 (def views [[:tests] [:fib-compile :fib-run-40]])
 

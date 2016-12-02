@@ -2,6 +2,7 @@
     (:require [reagent.core :as reagent :refer [atom]]))
 
 (def data (reagent/atom {}))
+(def rate-ms 1000)
 
 (defn keywordify [m]
   (cond
@@ -19,4 +20,4 @@
         (reset! data reply)))))
 
 (defn init! []
-  (js/setInterval get-data! poll-rate))
+  (js/setInterval get-data! rate-ms))
