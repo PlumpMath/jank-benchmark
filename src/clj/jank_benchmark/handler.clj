@@ -29,8 +29,8 @@
   (GET "/about" [] (loading-page))
   (GET "/api/stats" [] (response @run/current-data))
   (POST "/api/run" {body :body} (response
-                                  (run/run (json/read-str (slurp body)
-                                                          :key-fn keyword))))
+                                  (run/run! (json/read-str (slurp body)
+                                                           :key-fn keyword))))
   (resources "/")
   (not-found "Not Found"))
 

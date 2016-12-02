@@ -1,4 +1,5 @@
 (ns jank-benchmark.run
+  (:refer-clojure :exclude [run!])
   (:require [me.raynes.fs :as fs]
             [config.core :refer [env]]))
 
@@ -23,7 +24,7 @@
             (str "error " (:exit result) ": " args))
     result))
 
-(defn checkout [commit]
+(defn checkout! [commit]
   ; TODO: spec/conform commit
   (assert (re-matches #"^[a-zA-Z0-9]{7,40}$" commit) "invalid commit format")
   (when (not (fs/exists? jank-dir))
@@ -34,11 +35,11 @@
   (sh "git" "fetch" "origin" :dir jank-dir)
   (sh "git" "checkout" commit :dir jank-dir))
 
-(defn run [request]
+(defn run! [request]
   ; TODO: Only run if master branch updated
   ; TODO: Don't run multiple times for same commit
   (let [commit (:commit request)
-        _ (checkout commit)
+        _ (checkout! commit)
         sh-result (sh "lein" "with-profile" "benchmark" "trampoline" "run"
                       :dir jank-dir)
         data (read-string (:out sh-result))]
