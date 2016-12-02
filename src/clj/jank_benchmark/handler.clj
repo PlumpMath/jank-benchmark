@@ -42,13 +42,27 @@
 (defn write-data [data]
   (spit data-file (pr-str data)))
 
+(defn checkout [commit]
+  ; TODO: Verify commit
+  (when (not (fs/exists? dir))
+    (fs/mkdir "lib")
+    (println "Cloning jank...")
+    (clojure.java.shell/sh
+      "git" "clone" "https://github.com/jeaye/jank.git"
+      :dir "lib/"))
+  (clojure.java.shell/sh "git" "fetch" "origin"
+                         :dir "lib/jank/")
+  (clojure.java.shell/sh "git" "checkout" commit
+                         :dir "lib/jank/"))
+
 (defn run [request]
   ; TODO: Only run if master branch updated
   ; TODO: Don't run multiple times for same commit
-  (let [commit (:commit request)
+  (let [dir "lib/jank"
+        commit (:commit request)
         sh-result (clojure.java.shell/sh
                  "lein" "with-profile" "benchmark" "trampoline" "run"
-                 :dir "lib/jank")
+                 :dir "lib/jank/")
         data (read-string (:out sh-result))]
     ; TODO: Check out the right commit (fetch, checkout)
     (swap! current-data conj data)
