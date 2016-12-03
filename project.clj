@@ -49,7 +49,8 @@
 
   :minify-assets
   {:assets
-   {"resources/public/css/site.min.css" "resources/public/css/site.css"}}
+   {;"resources/public/css/site.min.css" "resources/public/css/site.css"
+    }}
 
   :cljsbuild
   {:builds {:min
@@ -77,7 +78,6 @@
    :server-port 3449
    :nrepl-port 7002
    :nrepl-middleware ["cemerick.piggieback/wrap-cljs-repl"]
-   :css-dirs ["resources/public/css"]
    :ring-handler jank-benchmark.handler/app}
 
   :profiles {:dev {:repl-options {:init-ns jank-benchmark.repl
