@@ -15,18 +15,24 @@
 ; TODO: Allow interactive tweaking of this (put it in a ratom)
 (def views [[:tests] [:fib-compile :fib-run-40]])
 
+(def layout (reagent/atom
+              (map-indexed (fn [i v]
+                             {:i (str i)
+                              :x (* i 100) :y 0
+                              :w 4 :h 8
+                              :minW 4 :minH 8})
+                           views)))
+
 (defn home-page []
   (let [results (map :results @poll/data)
-        layout (map-indexed (fn [i v]
-                              {:i (str i)
-                               :x 0 :y 0
-                               :w 500 :h 300})
-                            views)
         _ (pprint layout)]
-    ; TODO: width is fucked
-    [:> (js/ReactGridLayout.WidthProvider js/ReactGridLayout) {:className "layout"
-                                                               :layout layout
-                                                               :cols 5}
+    ; TODO: width is fucked: js/ReactGridLayout.WidthProvider
+    [:> js/ReactGridLayout {:className "layout"
+                            :layout @layout
+                            :onLayoutChange #(reset! layout %)
+                            :width 1200
+                            :cols 12
+                            :rowHeight 30}
      (map-indexed
        (fn [i v]
          [:div {:key (str i)}
