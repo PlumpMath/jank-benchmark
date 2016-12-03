@@ -18,7 +18,7 @@
 (def layout (reagent/atom
               (map-indexed (fn [i v]
                              {:i (str i)
-                              :x (* i 100) :y 0
+                              :x (* i 4) :y 0
                               :w 4 :h 8
                               :minW 4 :minH 8})
                            views)))
@@ -26,16 +26,16 @@
 (defn home-page []
   (let [results (map :results @poll/data)
         _ (pprint layout)]
-    ; TODO: width is fucked: js/ReactGridLayout.WidthProvider
-    [:> js/ReactGridLayout {:className "layout"
-                            :layout @layout
-                            :onLayoutChange #(reset! layout %)
-                            :width 1200
-                            :cols 12
-                            :rowHeight 30}
+    [:> (js/ReactGridLayout.WidthProvider js/ReactGridLayout)
+     {:className "layout"
+      :layout @layout
+      :onLayoutChange #(reset! layout %)
+      :cols 12
+      :rowHeight 30}
      (map-indexed
        (fn [i v]
-         [:div {:key (str i)}
+         [:div {:key (str i)
+                :style {:background-color "#657b83"}}
           (let [points (map #(util/extract % v) results)]
             [:> js/Recharts.LineChart {:width 500 :height 300
                                        :margin {:top 5 :right 30
