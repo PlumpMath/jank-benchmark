@@ -19,9 +19,9 @@
   (spit data-file (pr-str data)))
 
 (defn sh! [& args]
-  (let [result (apply clojure.java.shell/sh args)]
-    (assert (zero? (:exit result))
-            (str "error " (:exit result) ": " args))
+  (let [result (apply clojure.java.shell/sh args)
+        exit (:exit result)]
+    (assert (zero? exit) (str "error " exit ": " args))
     result))
 
 (defn checkout! [commit]
