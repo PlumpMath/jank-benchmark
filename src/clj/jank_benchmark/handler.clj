@@ -5,7 +5,7 @@
             [ring.util.response :refer [response]]
             [compojure
              [core :refer [GET POST defroutes]]
-             [route :refer [not-found resources]]]
+             [route :refer [not-found]]]
             [hiccup.page :refer [include-js include-css html5]]
             [clojure.data.json :as json]))
 
