@@ -7,9 +7,7 @@
               [accountant.core :as accountant]
               [cljsjs.recharts]
               [cljsjs.react-grid-layout]
-              [cljs.core.async :refer [<!]]
-              [clojure.pprint :refer [pprint]])
-    (:require-macros [cljs.core.async.macros :refer [go]]))
+              [clojure.pprint :refer [pprint]]))
 
 ;; -------------------------
 ;; Views

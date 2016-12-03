@@ -6,7 +6,7 @@
             [ring.util.response :refer [response]]
             [compojure
              [core :refer [GET POST defroutes]]
-             [route :refer [not-found]]]
+             [route :refer [not-found resources]]]
             [hiccup.page :refer [include-js include-css html5]]
             [clojure.data.json :as json]))
 
@@ -31,6 +31,7 @@
   (POST "/api/run" {body :body} (response
                                   (run/run! (json/read-str (slurp body)
                                                            :key-fn keyword))))
+  (resources "/")
   (not-found "Not Found"))
 
 (def app (wrap-middleware #'app-routes))

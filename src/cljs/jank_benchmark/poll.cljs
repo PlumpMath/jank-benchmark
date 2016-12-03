@@ -1,7 +1,9 @@
 (ns jank-benchmark.poll
   (:require [jank-benchmark.util :as util]
             [cljs-http.client :as http]
-            [reagent.core :as reagent :refer [atom]]))
+            [cljs.core.async :refer [<!]]
+            [reagent.core :as reagent :refer [atom]])
+  (:require-macros [cljs.core.async.macros :refer [go]]))
 
 (def data (reagent/atom {}))
 (def rate-ms 1000)
