@@ -1,14 +1,12 @@
 (ns jank-benchmark.core
-    (:require [jank-benchmark
-               [poll :as poll]
-               [util :as util]]
+    (:require [jank-benchmark.poll :as poll]
+              [jank-benchmark.util :as util]
               [reagent.core :as reagent :refer [atom]]
               [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]
               [accountant.core :as accountant]
-              [cljsjs
-               [recharts]
-               [react-grid-layout]]
+              [cljsjs.recharts]
+              [cljsjs.react-grid-layout]
               [cljs.core.async :refer [<!]]
               [clojure.pprint :refer [pprint]])
     (:require-macros [cljs.core.async.macros :refer [go]]))

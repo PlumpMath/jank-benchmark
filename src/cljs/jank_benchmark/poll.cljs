@@ -1,6 +1,5 @@
 (ns jank-benchmark.poll
-  (:require [jank-benchmark
-             [util :as util]]
+  (:require [jank-benchmark.util :as util]
             [cljs-http.client :as http]
             [reagent.core :as reagent :refer [atom]]))
 

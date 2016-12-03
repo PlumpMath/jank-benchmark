@@ -1,6 +1,7 @@
 (ns jank-benchmark.handler
   (:require [jank-benchmark
              [middleware :refer [wrap-middleware]]
+             [run :as run]
              [css :as css]]
             [ring.util.response :refer [response]]
             [compojure

@@ -24,6 +24,8 @@
                  [compojure "1.5.1"]
                  [hiccup "1.0.5"]
                  [garden "1.3.1"]
+                 [prone "1.1.2"]
+                 [me.raynes/fs "1.4.6"]
                  [yogthos/config "0.8"]]
 
   :plugins [[lein-environ "1.0.2"]
@@ -85,12 +87,10 @@
 
                    :dependencies [[ring/ring-mock "0.3.0"]
                                   [ring/ring-devel "1.5.0"]
-                                  [prone "1.1.2"]
                                   [figwheel-sidecar "0.5.8"]
                                   [org.clojure/tools.nrepl "0.2.12"]
                                   [com.cemerick/piggieback "0.2.2-SNAPSHOT"]
-                                  [pjstadig/humane-test-output "0.8.1"]
-                                  [me.raynes/fs "1.4.6"]]
+                                  [pjstadig/humane-test-output "0.8.1"]]
 
                    :source-paths ["env/dev/clj"]
                    :plugins [[lein-figwheel "0.5.8"]]
