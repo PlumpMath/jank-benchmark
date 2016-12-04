@@ -37,7 +37,7 @@
          [:div {:key (str i)
                 :style {:background-color "#657b83"}}
           (let [points (map #(util/extract % v) results)]
-            [:> js/Recharts.LineChart {:width 500 :height 300
+            [:> js/Recharts.LineChart {;:width 500 :height 300
                                        :margin {:top 5 :right 30
                                                 :left 20 :bottom 5}
                                        :data points}
