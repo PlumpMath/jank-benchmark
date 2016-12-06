@@ -15,26 +15,24 @@
 ; TODO: Allow interactive tweaking of this (put it in a ratom)
 (def views [[:tests] [:fib-compile :fib-run-40]
             [:tests] [:fib-compile :fib-run-40]
-            ;[:tests] [:fib-compile :fib-run-40]
+            [:tests] [:fib-compile :fib-run-40]
             ;[:tests] [:fib-compile :fib-run-40]
             ;[:tests] [:fib-compile :fib-run-40]
             ;[:tests] [:fib-compile :fib-run-40]
             ])
 
+(def cols 12)
 (def cell-width 3) ; TODO: Map for these
 (def cell-height 3)
-(def cols 12)
 (def cell-margin [0 0])
+(def cell-cols (/ cols cell-width))
 (def row-height 150)
-
-(def window-width 1900)
-(def grid-width (/ window-width (/ cols cell-width)))
-(def grid-height (* row-height cell-height))
 
 (def layout (reagent/atom
               (map-indexed (fn [i v]
                              {:i (str i)
-                              :x (* i cell-width) :y 0
+                              :x (* cell-width (mod i cell-cols))
+                              :y (* cell-height (int (/ i cell-cols)))
                               :w cell-width :h cell-height
                               :minW cell-width :minH cell-height})
                            views)))
@@ -48,15 +46,13 @@
       :margin cell-margin
       :cols cols
       :rowHeight row-height}
+    [:div {:key "0"} (pr-str @layout)]
      (map-indexed
        (fn [i v]
-         [:div {:key (str i)
-                ;:style {:background-color "#657b83"}
-                }
+         [:div {:key (str i)}
           (let [points (map #(util/extract % v) results)]
             [:> js/Recharts.ResponsiveContainer
              [:> js/Recharts.LineChart {:data points}
-             ;[:> js/Recharts.XAxis {:dataKey "name"}]
              [:> js/Recharts.XAxis]
              [:> js/Recharts.YAxis]
              [:> js/Recharts.CartesianGrid {:strokeDasharray "3 3"}]
