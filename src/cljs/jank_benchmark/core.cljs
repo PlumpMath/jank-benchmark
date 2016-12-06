@@ -13,13 +13,23 @@
 ;; Views
 
 ; TODO: Allow interactive tweaking of this (put it in a ratom)
-(def views [[:tests] [:fib-compile :fib-run-40]])
+(def views [[:tests] [:fib-compile :fib-run-40]
+            [:tests] [:fib-compile :fib-run-40]
+            ;[:tests] [:fib-compile :fib-run-40]
+            ;[:tests] [:fib-compile :fib-run-40]
+            ;[:tests] [:fib-compile :fib-run-40]
+            ;[:tests] [:fib-compile :fib-run-40]
+            ])
 
 (def cell-width 3) ; TODO: Map for these
-(def cell-height 8)
-(def cell-cols 12)
+(def cell-height 3)
+(def cols 12)
 (def cell-margin [0 0])
-(def row-height 30)
+(def row-height 150)
+
+(def window-width 1900)
+(def grid-width (/ window-width (/ cols cell-width)))
+(def grid-height (* row-height cell-height))
 
 (def layout (reagent/atom
               (map-indexed (fn [i v]
@@ -30,34 +40,32 @@
                            views)))
 
 (defn home-page []
-  (let [results (map :results @poll/data)
-        _ (pprint layout)]
+  (let [results (map :results @poll/data)]
     [:> (js/ReactGridLayout.WidthProvider js/ReactGridLayout)
      {:className "layout"
       :layout @layout
       :onLayoutChange #(reset! layout %)
       :margin cell-margin
-      :cols cell-cols
+      :cols cols
       :rowHeight row-height}
      (map-indexed
        (fn [i v]
          [:div {:key (str i)
-                :style {:background-color "#657b83"}}
+                ;:style {:background-color "#657b83"}
+                }
           (let [points (map #(util/extract % v) results)]
-            [:> js/Recharts.LineChart {:width 500 :height 300
-                                       :margin {:top 5 :right 30
-                                                :left 20 :bottom 5}
-                                       :data points}
+            [:> js/Recharts.ResponsiveContainer
+             [:> js/Recharts.LineChart {:data points}
              ;[:> js/Recharts.XAxis {:dataKey "name"}]
              [:> js/Recharts.XAxis]
              [:> js/Recharts.YAxis]
              [:> js/Recharts.CartesianGrid {:strokeDasharray "3 3"}]
-             [:> js.Recharts.Tooltip]
+             ;[:> js.Recharts.Tooltip]
              [:> js/Recharts.Legend]
              (for [k v]
                [:> js/Recharts.Line {:type "monotone"
                                      :dataKey k
-                                     :activeDot {:r 8}}])])])
+                                     :activeDot {:r 8}}])]])])
        views)]))
 
 (defn about-page []
