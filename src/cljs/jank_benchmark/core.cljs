@@ -15,12 +15,18 @@
 ; TODO: Allow interactive tweaking of this (put it in a ratom)
 (def views [[:tests] [:fib-compile :fib-run-40]])
 
+(def cell-width 3) ; TODO: Map for these
+(def cell-height 8)
+(def cell-cols 12)
+(def cell-margin [0 0])
+(def row-height 30)
+
 (def layout (reagent/atom
               (map-indexed (fn [i v]
                              {:i (str i)
-                              :x (* i 4) :y 0
-                              :w 4 :h 8
-                              :minW 4 :minH 8})
+                              :x (* i cell-width) :y 0
+                              :w cell-width :h cell-height
+                              :minW cell-width :minH cell-height})
                            views)))
 
 (defn home-page []
@@ -30,8 +36,9 @@
      {:className "layout"
       :layout @layout
       :onLayoutChange #(reset! layout %)
-      :cols 12
-      :rowHeight 30}
+      :margin cell-margin
+      :cols cell-cols
+      :rowHeight row-height}
      (map-indexed
        (fn [i v]
          [:div {:key (str i)
