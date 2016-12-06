@@ -65,6 +65,7 @@
              (for [k v]
                [:> js/Recharts.Line {:type "monotone"
                                      :dataKey k
+                                     :isAnimationActive false
                                      :activeDot {:r 8}}])]])])
        views)]))
 
