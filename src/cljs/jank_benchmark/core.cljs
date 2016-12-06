@@ -21,12 +21,13 @@
             ;[:tests] [:fib-compile :fib-run-40]
             ])
 
-(def cols 12)
-(def cell-width 3) ; TODO: Map for these
+(def grid-cols 12)
+(def row-height 150)
+
+(def cell-width 3)
 (def cell-height 3)
 (def cell-margin [0 0])
-(def cell-cols (/ cols cell-width))
-(def row-height 150)
+(def cell-cols (/ grid-cols cell-width))
 
 (def layout (reagent/atom
               (map-indexed (fn [i v]
@@ -44,7 +45,7 @@
       :layout @layout
       :onLayoutChange #(reset! layout %)
       :margin cell-margin
-      :cols cols
+      :cols grid-cols
       :rowHeight row-height}
     [:div {:key "0"} (pr-str @layout)]
      (map-indexed
