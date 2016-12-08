@@ -32,7 +32,7 @@
               (map-indexed (fn [i v]
                              {:i (str i)
                               :x (* cell-width (mod i cell-cols))
-                              :y (* cell-height (int (/ i cell-cols))) ; TODO: Fix
+                              :y (* cell-height (int (/ i cell-cols)))
                               :w cell-width :h cell-height
                               :minW cell-width :minH cell-height})
                            views)))
