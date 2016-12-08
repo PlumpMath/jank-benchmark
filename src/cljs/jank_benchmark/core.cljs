@@ -16,13 +16,13 @@
 (def views [[:tests] [:fib-compile :fib-run-40]
             [:tests] [:fib-compile :fib-run-40]
             [:tests] [:fib-compile :fib-run-40]
-            ;[:tests] [:fib-compile :fib-run-40]
-            ;[:tests] [:fib-compile :fib-run-40]
-            ;[:tests] [:fib-compile :fib-run-40]
+            [:tests] [:fib-compile :fib-run-40]
+            [:tests] [:fib-compile :fib-run-40]
+            [:tests] [:fib-compile :fib-run-40]
             ])
 
 (def cols 12)
-(def cell-width 3) ; TODO: Map for these
+(def cell-width 3)
 (def cell-height 3)
 (def cell-margin [0 0])
 (def cell-cols (/ cols cell-width))
@@ -32,7 +32,7 @@
               (map-indexed (fn [i v]
                              {:i (str i)
                               :x (* cell-width (mod i cell-cols))
-                              :y (* cell-height (int (/ i cell-cols)))
+                              :y (* cell-height (int (/ i cell-cols))) ; TODO: Fix
                               :w cell-width :h cell-height
                               :minW cell-width :minH cell-height})
                            views)))
@@ -46,7 +46,7 @@
       :margin cell-margin
       :cols cols
       :rowHeight row-height}
-    [:div {:key "0"} (pr-str @layout)]
+    ;[:div {:key "0"} (pr-str @layout)]
      (map-indexed
        (fn [i v]
          [:div {:key (str i)}
