@@ -52,16 +52,16 @@
           (let [points (map #(util/extract % v) results)]
             [:> js/Recharts.ResponsiveContainer
              [:> js/Recharts.LineChart {:data points}
-             [:> js/Recharts.XAxis]
-             [:> js/Recharts.YAxis]
-             [:> js/Recharts.CartesianGrid {:strokeDasharray "3 3"}]
-             ;[:> js.Recharts.Tooltip]
-             [:> js/Recharts.Legend]
-             (for [k v]
-               [:> js/Recharts.Line {:type "monotone"
-                                     :dataKey k
-                                     :isAnimationActive false
-                                     :activeDot {:r 8}}])]])])
+              [:> js/Recharts.XAxis]
+              [:> js/Recharts.YAxis]
+              [:> js/Recharts.CartesianGrid {:strokeDasharray "3 3"}]
+              ;[:> js.Recharts.Tooltip]
+              [:> js/Recharts.Legend]
+              (for [k v]
+                [:> js/Recharts.Line {:type "monotone"
+                                      :dataKey k
+                                      :isAnimationActive false
+                                      :activeDot {:r 8}}])]])])
        views)]))
 
 (defn about-page []
