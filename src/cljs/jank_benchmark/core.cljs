@@ -46,7 +46,6 @@
       :margin cell-margin
       :cols cols
       :rowHeight row-height}
-    ;[:div {:key "0"} (pr-str @layout)]
      (map-indexed
        (fn [i v]
          [:div {:key (str i)}
