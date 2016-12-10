@@ -37,9 +37,9 @@
     jank-dir))
 
 (defn run! [request]
-  ; TODO: Only run if master branch updated
   ; TODO: Don't run multiple times for same commit
-  (let [commit (:commit request)
+  ; TODO: spec/conform request; have spec check for master branch
+  (let [commit (:after request)
         jank-dir (checkout! commit)
         sh-result (sh! "lein" "with-profile" "benchmark" "trampoline" "run"
                        :dir jank-dir)
