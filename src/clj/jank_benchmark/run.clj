@@ -41,8 +41,10 @@
   ; TODO: spec/conform request; have spec check for master branch
   (let [commit (:after request)
         jank-dir (checkout! commit)
+        _ (println (str commit " - Running benchmark"))
         sh-result (sh! "lein" "with-profile" "benchmark" "trampoline" "run"
                        :dir jank-dir)
+        _ (println (str commit " - Storing results"))
         data (read-string (:out sh-result))]
     (swap! current-data #(->> (conj % data)
                               (sort-by :commit-timestamp)))
