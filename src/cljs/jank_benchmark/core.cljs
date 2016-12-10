@@ -40,30 +40,33 @@
 
 (defn home-page []
   (let [results (map :results @poll/data)]
-    [:> (js/ReactGridLayout.WidthProvider js/ReactGridLayout)
-     {:className "layout"
-      :layout @layout
-      :onLayoutChange #(reset! layout %)
-      :margin cell-margin
-      :cols grid-cols
-      :rowHeight row-height}
-     (map-indexed
-       (fn [i v]
-         [:div {:key (str i)}
-          (let [points (map #(util/extract % v) results)]
-            [:> js/Recharts.ResponsiveContainer
-             [:> js/Recharts.LineChart {:data points}
-              [:> js/Recharts.XAxis]
-              [:> js/Recharts.YAxis]
-              [:> js/Recharts.CartesianGrid {:strokeDasharray "3 3"}]
-              ;[:> js.Recharts.Tooltip]
-              [:> js/Recharts.Legend]
-              (for [k v]
-                [:> js/Recharts.Line {:type "monotone"
-                                      :dataKey k
-                                      :isAnimationActive false
-                                      :activeDot {:r 8}}])]])])
-       views)]))
+    (if (empty? results)
+      [:div "no results"]
+      [:> (js/ReactGridLayout.WidthProvider js/ReactGridLayout)
+       {:className "layout"
+        :layout @layout
+        :onLayoutChange #(reset! layout %)
+        :margin cell-margin
+        :cols grid-cols
+        :rowHeight row-height}
+       (map-indexed
+         (fn [i v]
+           [:div {:key (str i)}
+            (let [points (map #(util/extract % v) results)]
+              [:> js/Recharts.ResponsiveContainer
+               [:> js/Recharts.LineChart {:data points}
+                [:> js/Recharts.XAxis]
+                [:> js/Recharts.YAxis]
+                [:> js/Recharts.CartesianGrid {:strokeDasharray "3 3"}]
+                ;[:> js.Recharts.Tooltip]
+                [:> js/Recharts.Legend]
+                (for [k v]
+                  [:> js/Recharts.Line {:type "monotone"
+                                        :key (str i "-" k)
+                                        :dataKey k
+                                        :isAnimationActive false
+                                        :activeDot {:r 8}}])]])])
+         views)])))
 
 (defn about-page []
   [:div [:h2 "About jank-benchmark!"]
