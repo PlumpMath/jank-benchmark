@@ -1,7 +1,8 @@
 (ns jank-benchmark.run
   (:refer-clojure :exclude [run!])
   (:require [me.raynes.fs :as fs]
-            [config.core :refer [env]]))
+            [config.core :refer [env]]
+            [clojure.pprint :refer [pprint]]))
 
 (def data-file "stored-data")
 (def lib-dir "lib/")

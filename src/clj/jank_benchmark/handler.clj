@@ -8,7 +8,9 @@
              [core :refer [GET POST defroutes]]
              [route :refer [not-found resources]]]
             [hiccup.page :refer [include-js include-css html5]]
-            [clojure.data.json :as json]))
+            [clojure.data.json :as json]
+            [clojure
+             [pprint :refer [pprint]]]))
 
 (defn head []
   [:head
