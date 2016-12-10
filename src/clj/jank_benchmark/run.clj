@@ -32,7 +32,8 @@
     (fs/mkdir lib-dir)
     (println "Cloning jank...")
     (sh! "git" "clone" "https://github.com/jeaye/jank.git"
-         :dir lib-dir))
+         :dir lib-dir)
+    (sh! "git" "submodule" "update" "--recursive" "--init" :dir jank-dir))
   (sh! "git" "fetch" "origin" :dir jank-dir)
   (sh! "git" "checkout" commit :dir jank-dir))
 
