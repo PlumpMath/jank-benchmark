@@ -28,7 +28,7 @@
   (assert (re-matches #"^[a-zA-Z0-9]{7,40}$" commit) "invalid commit format")
   (let [temp-dir (fs/temp-dir "jank-benchmark")
         jank-dir (str temp-dir "/jank")]
-    (println (str "Cloning jank into " jank-dir))
+    (println (str commit " - Cloning jank into " jank-dir))
     (sh! "git" "clone" "-q" "--single-branch"
          "https://github.com/jeaye/jank.git"
          :dir temp-dir)
