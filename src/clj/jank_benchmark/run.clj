@@ -5,8 +5,6 @@
             [clojure.pprint :refer [pprint]]))
 
 (def data-file "stored-data")
-(def lib-dir "lib/")
-(def jank-dir (str lib-dir "jank/"))
 
 (defn read-data []
   (let [data (if (fs/exists? data-file)
@@ -28,20 +26,21 @@
 (defn checkout! [commit]
   ; TODO: spec/conform commit
   (assert (re-matches #"^[a-zA-Z0-9]{7,40}$" commit) "invalid commit format")
-  (when (not (fs/exists? jank-dir))
-    (fs/mkdir lib-dir)
-    (println "Cloning jank...")
-    (sh! "git" "clone" "https://github.com/jeaye/jank.git"
-         :dir lib-dir)
-    (sh! "git" "submodule" "update" "--recursive" "--init" :dir jank-dir))
-  (sh! "git" "fetch" "origin" :dir jank-dir)
-  (sh! "git" "checkout" commit :dir jank-dir))
+  (let [temp-dir (fs/temp-dir "jank-benchmark")
+        jank-dir (str temp-dir "/" jank-dir)]
+    (println (str "Cloning jank into " jank-dir))
+    (sh! "git" "clone" "-q" "--single-branch"
+         "https://github.com/jeaye/jank.git"
+         :dir temp-dir)
+    (sh! "git" "checkout" commit :dir jank-dir)
+    (sh! "git" "submodule" "update" "--recursive" "--init" :dir jank-dir)
+    jank-dir))
 
 (defn run! [request]
   ; TODO: Only run if master branch updated
   ; TODO: Don't run multiple times for same commit
   (let [commit (:commit request)
-        _ (checkout! commit)
+        jank-dir (checkout! commit)
         sh-result (sh! "lein" "with-profile" "benchmark" "trampoline" "run"
                        :dir jank-dir)
         data (read-string (:out sh-result))]
