@@ -2,7 +2,8 @@
   (:require [jank-benchmark.util :as util]
             [cljs-http.client :as http]
             [cljs.core.async :refer [<!]]
-            [reagent.core :as reagent :refer [atom]])
+            [reagent.core :as reagent :refer [atom]]
+            [clojure.pprint :refer [pprint]])
   (:require-macros [cljs.core.async.macros :refer [go]]))
 
 (def data (reagent/atom {}))
@@ -18,4 +19,4 @@
         (reset! data reply)))))
 
 (defn init! []
-  (js/setInterval get-data! rate-ms))
+  (js/setInterval get-data! rate-ms)) ; TODO: get immediately?
