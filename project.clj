@@ -82,6 +82,8 @@
    :nrepl-middleware ["cemerick.piggieback/wrap-cljs-repl"]
    :ring-handler jank-benchmark.handler/app}
 
+  :local-repo ".m2" ; For Nix build
+
   :profiles {:dev {:repl-options {:init-ns jank-benchmark.repl
                                   :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
 
@@ -101,7 +103,6 @@
                    :env {:dev true}}
 
              :uberjar {:hooks [minify-assets.plugin/hooks]
-                       :local-repo ".m2" ; For Nix build
                        :source-paths ["env/prod/clj"]
                        :prep-tasks ["compile" ["cljsbuild" "once" "min"]]
                        :env {:production true}
