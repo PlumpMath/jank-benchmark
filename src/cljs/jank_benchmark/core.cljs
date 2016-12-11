@@ -13,13 +13,7 @@
 ;; Views
 
 ; TODO: Allow interactive tweaking of this (put it in a ratom)
-(def views [[:tests] [:fib-compile :fib-run-40]
-            [:tests] [:fib-compile :fib-run-40]
-            [:tests] [:fib-compile :fib-run-40]
-            [:tests] [:fib-compile :fib-run-40]
-            [:tests] [:fib-compile :fib-run-40]
-            [:tests] [:fib-compile :fib-run-40]
-            ])
+(def views [[:tests] [:fib-compile :fib-run-40]])
 
 (def grid-cols 12)
 (def row-height 150)
