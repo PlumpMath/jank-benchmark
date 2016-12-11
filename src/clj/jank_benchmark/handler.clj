@@ -27,6 +27,7 @@
       [:h3 "Loading..."]]
      (include-js "/js/app.js")]))
 
+; TODO: Return good errors on failure
 (defroutes app-routes
   (GET "/" [] (loading-page))
   (GET "/api/stats" [] (response @run/current-data))
