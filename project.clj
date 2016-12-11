@@ -32,6 +32,8 @@
             [lein-cljsbuild "1.1.1"]
             [lein-asset-minifier "0.2.7" :exclusions [org.clojure/clojure]]]
 
+  :local-repo ".m2"
+
   :ring {:handler jank-benchmark.handler/app
          :uberwar-name "jank-benchmark.war"}
 
