@@ -32,8 +32,6 @@
             [lein-cljsbuild "1.1.1"]
             [lein-asset-minifier "0.2.7" :exclusions [org.clojure/clojure]]]
 
-  :local-repo ".m2"
-
   :ring {:handler jank-benchmark.handler/app
          :uberwar-name "jank-benchmark.war"}
 
@@ -103,6 +101,7 @@
                    :env {:dev true}}
 
              :uberjar {:hooks [minify-assets.plugin/hooks]
+                       :local-repo ".m2" ; For Nix build
                        :source-paths ["env/prod/clj"]
                        :prep-tasks ["compile" ["cljsbuild" "once" "min"]]
                        :env {:production true}
