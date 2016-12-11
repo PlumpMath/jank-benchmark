@@ -43,6 +43,7 @@
   (let [commit (:after request)
         jank-dir (checkout! commit)
         _ (println (str commit " - Running benchmark"))
+        ; Get deps first so dep output isn't in benchmark output
         deps (sh! "lein" "with-profile" "benchmark" "deps" :dir jank-dir)
         sh-result (sh! "lein" "with-profile" "benchmark" "run" :dir jank-dir)
         _ (println (str commit " - Storing results"))
