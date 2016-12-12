@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -eu
+
+if [ ! $# -eq 2 ];
+then
+  echo "usage: "
+  echo "  $0 localhost:3000 <commit hash>"
+  echo "  $0 benchmark.jank-lang.org <commit hash>"
+  exit 1
+fi
+
+json="{\"ref\": \"refs/heads/master\", \"after\": \"$2\"}"
+
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d "$json" \
+  http://$1/api/run
