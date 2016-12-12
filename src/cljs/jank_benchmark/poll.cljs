@@ -19,4 +19,6 @@
         (reset! data reply)))))
 
 (defn init! []
-  (js/setInterval get-data! rate-ms)) ; TODO: get immediately?
+  (js/setInterval get-data! rate-ms)
+  ; Rather than waiting for the first call, do it immediately
+  (get-data!))
