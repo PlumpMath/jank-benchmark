@@ -13,6 +13,7 @@
                  [cljsjs/react-grid-layout "0.13.7-0"]
                  [secretary "1.2.3"]
                  [venantius/accountant "0.1.7" :exclusions [org.clojure/tools.reader]]
+                 [com.andrewmcveigh/cljs-time "0.5.0-alpha2"]
 
                  ; Backend
                  [org.clojure/clojure "1.8.0"]
