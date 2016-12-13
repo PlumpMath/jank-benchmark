@@ -9,7 +9,8 @@
               [cljs-time.coerce :as time-coerce]
               [cljsjs.recharts]
               [cljsjs.react-grid-layout]
-              [clojure.pprint :refer [pprint]]))
+              [cljs.reader :as reader]
+              [clojure.pprint :refer [pprint write]]))
 
 ;; -------------------------
 ;; Views
@@ -33,8 +34,9 @@
                               :x (* cell-width (mod i cell-cols))
                               :y (* cell-height (int (/ i cell-cols)))
                               :w cell-width :h cell-height
-                              :minW cell-width :minH cell-height})
-                           views)))
+                              :minW cell-width :minH cell-height
+                              :maxW cell-width :maxH cell-height})
+                           @views)))
 
 (def formatter (time-format/formatter "MMM d"))
 (defn format-timestamp [stamp]
@@ -48,31 +50,34 @@
                      @poll/data)]
     (if (empty? results)
       [:div "no results"]
-      [:> (js/ReactGridLayout.WidthProvider js/ReactGridLayout)
-       {:className "layout"
-        :layout @layout
-        :onLayoutChange #(reset! layout %)
-        :margin cell-margin
-        :cols grid-cols
-        :rowHeight row-height}
-       (map-indexed
-         (fn [i v]
-           [:div {:key (str i)}
-            (let [points (map #(util/extract % v) results)]
-              [:> js/Recharts.ResponsiveContainer
-               [:> js/Recharts.LineChart {:data points}
-                [:> js/Recharts.XAxis]
-                [:> js/Recharts.YAxis]
-                [:> js/Recharts.CartesianGrid {:strokeDasharray "3 3"}]
-                ;[:> js.Recharts.Tooltip]
-                [:> js/Recharts.Legend]
-                (for [k v]
-                  [:> js/Recharts.Line {:type "monotone"
-                                        :key (str i "-" k)
-                                        :dataKey k
-                                        :isAnimationActive false
-                                        :activeDot {:r 8}}])]])])
-         views)])))
+      [:div
+       [:div {:class "grid"}
+        [:> (js/ReactGridLayout.WidthProvider js/ReactGridLayout)
+         {:className "layout"
+          :layout @layout
+          :onLayoutChange #(reset! layout %)
+          :margin cell-margin
+          :cols grid-cols
+          :rowHeight row-height}
+         (map-indexed
+           (fn [i v]
+             [:div {:key (str i)}
+              (let [points (map #(util/extract % (conj v :commit-timestamp))
+                                results)]
+                [:> js/Recharts.ResponsiveContainer
+                 [:> js/Recharts.LineChart {:data points}
+                  [:> js/Recharts.XAxis {:dataKey "commit-timestamp"}]
+                  [:> js/Recharts.YAxis]
+                  [:> js/Recharts.CartesianGrid {:strokeDasharray "3 3"}]
+                  ;[:> js.Recharts.Tooltip]
+                  [:> js/Recharts.Legend]
+                  (for [k v]
+                    [:> js/Recharts.Line {:type "monotone"
+                                          :key (str i "-" k)
+                                          :dataKey k
+                                          :isAnimationActive false
+                                          :activeDot {:r 8}}])]])])
+           @views)]]])))
 
 (defn about-page []
   [:div [:h2 "About jank-benchmark!"]
