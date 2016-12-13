@@ -5,7 +5,6 @@
               [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]
               [accountant.core :as accountant]
-              [cljs-time.core :as time-core]
               [cljs-time.format :as time-format]
               [cljs-time.coerce :as time-coerce]
               [cljsjs.recharts]
