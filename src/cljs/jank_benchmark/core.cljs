@@ -15,9 +15,9 @@
 ;; Views
 
 ; TODO: Allow interactive tweaking of this (put it in a ratom)
-(def views [[:tests]
-            [:empty-compile :empty-run]
-            [:fib-compile :fib-run-40]])
+(def views (reagent/atom [[:tests]
+                          [:empty-compile :empty-run]
+                          [:fib-compile :fib-run-40]]))
 
 (def grid-cols 12)
 (def row-height 150)
