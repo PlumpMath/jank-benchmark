@@ -5,6 +5,9 @@
               [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]
               [accountant.core :as accountant]
+              [cljs-time.core :as time-core]
+              [cljs-time.format :as time-format]
+              [cljs-time.coerce :as time-coerce]
               [cljsjs.recharts]
               [cljsjs.react-grid-layout]
               [clojure.pprint :refer [pprint]]))
@@ -34,8 +37,16 @@
                               :minW cell-width :minH cell-height})
                            views)))
 
+(def formatter (time-format/formatter "MMM d"))
+(defn format-timestamp [stamp]
+  (time-format/unparse formatter (time-coerce/from-long stamp)))
+
 (defn home-page []
-  (let [results (map :results @poll/data)]
+  (let [results (map #(-> %
+                          :results
+                          (assoc :commit-timestamp
+                                 (format-timestamp (:commit-timestamp %))))
+                     @poll/data)]
     (if (empty? results)
       [:div "no results"]
       [:> (js/ReactGridLayout.WidthProvider js/ReactGridLayout)
