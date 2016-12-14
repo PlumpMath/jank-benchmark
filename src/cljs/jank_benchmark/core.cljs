@@ -87,17 +87,17 @@
                                 results)]
                 [:> js/Recharts.ResponsiveContainer
                  [:> js/Recharts.LineChart {:data points}
-                  [:> js/Recharts.XAxis {:dataKey "commit-timestamp"}]
-                  [:> js/Recharts.YAxis]
+                  [:> js/Recharts.XAxis {:dataKey "commit-timestamp"
+                                         :label "meow"}]
+                  [:> js/Recharts.YAxis {:label "ms"}]
                   [:> js/Recharts.CartesianGrid {:strokeDasharray "3 3"}]
-                  ;[:> js.Recharts.Tooltip]
+                  [:> js.Recharts.Tooltip {:isAnimationActive false}]
                   [:> js/Recharts.Legend]
                   (for [k v]
                     [:> js/Recharts.Line {:type "monotone"
                                           :key (str i "-" k)
                                           :dataKey k
-                                          :isAnimationActive false
-                                          :activeDot {:r 8}}])]])])
+                                          :isAnimationActive false}])]])])
            @views)]]])))
 
 (defn about-page []
