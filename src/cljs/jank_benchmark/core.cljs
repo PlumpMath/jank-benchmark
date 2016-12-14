@@ -28,15 +28,30 @@
 (def cell-margin [0 0])
 (def cell-cols (/ grid-cols cell-width))
 
-(def layout (reagent/atom
-              (map-indexed (fn [i v]
-                             {:i (str i)
-                              :x (* cell-width (mod i cell-cols))
-                              :y (* cell-height (int (/ i cell-cols)))
-                              :w cell-width :h cell-height
-                              :minW cell-width :minH cell-height
-                              :maxW cell-width :maxH cell-height})
-                           @views)))
+(defn generate-layout
+  [vs]
+  (map-indexed (fn [i v]
+                 {:i (str i)
+                  :x (* cell-width (mod i cell-cols))
+                  :y (* cell-height (int (/ i cell-cols)))
+                  :w cell-width :h cell-height
+                  :minW cell-width :minH cell-height
+                  :maxW cell-width :maxH cell-height})
+               vs))
+
+(def layout (reagent/atom (generate-layout @views)))
+
+(defn parse-input [evt]
+  (let [str-value (-> evt .-target .-value)]
+    (try
+      (let [value (reader/read-string str-value)]
+        (when (not= views value)
+          (reset! views value)
+          (reset! layout (generate-layout @views)))
+        true)
+      (catch js/Object e
+        ; Don't change anything; the input isn't valid
+        true))))
 
 (def formatter (time-format/formatter "MMM d"))
 (defn format-timestamp [stamp]
@@ -51,6 +66,12 @@
     (if (empty? results)
       [:div "no results"]
       [:div
+       [:div {:class "input"}
+        [:textarea {:style {:width "100%"
+                            :height "20%"}
+                    :default-value (write @views :stream nil)
+                    :on-input parse-input}]]
+
        [:div {:class "grid"}
         [:> (js/ReactGridLayout.WidthProvider js/ReactGridLayout)
          {:className "layout"
