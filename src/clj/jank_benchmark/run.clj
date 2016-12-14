@@ -25,7 +25,6 @@
 
 (defn checkout! [commit]
   ; TODO: spec/conform commit
-  (pprint commit)
   (assert (re-matches #"^[a-zA-Z0-9]{7,40}$" commit) "invalid commit format")
   (let [temp-dir (fs/temp-dir "jank-benchmark")
         jank-dir (str temp-dir "/jank")]
@@ -38,18 +37,19 @@
     jank-dir))
 
 (defn run! [request]
-  ; TODO: Don't run multiple times for same commit
   ; TODO: spec/conform request; have spec check for master branch
-  (let [commit (:after request)
-        jank-dir (checkout! commit)
-        _ (println (str commit " - Running benchmark"))
-        ; Get deps first so dep output isn't in benchmark output
-        deps (sh! "lein" "with-profile" "benchmark" "deps" :dir jank-dir)
-        sh-result (sh! "lein" "with-profile" "benchmark" "run" :dir jank-dir)
-        _ (println (str commit " - Storing results"))
-        data (read-string (:out sh-result))]
-    (swap! current-data #(->> (assoc data :commit commit)
-                              (conj %)
-                              (sort-by :commit-timestamp)))
-    (write-data @current-data)
-    data))
+  (let [commit (:after request)]
+    (if (some (comp #{commit} :commit) @current-data)
+      (println (str commit " - Already ran this benchmark"))
+      (let [jank-dir (checkout! commit)
+            _ (println (str commit " - Running benchmark"))
+            ; Get deps first so dep output isn't in benchmark output
+            deps (sh! "lein" "with-profile" "benchmark" "deps" :dir jank-dir)
+            sh-result (sh! "lein" "with-profile" "benchmark" "run" :dir jank-dir)
+            _ (println (str commit " - Storing results"))
+            data (read-string (:out sh-result))]
+        (swap! current-data #(->> (assoc data :commit commit)
+                                  (conj %)
+                                  (sort-by :commit-timestamp)))
+        (write-data @current-data)
+        data))))
