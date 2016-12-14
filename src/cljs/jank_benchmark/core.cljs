@@ -87,9 +87,8 @@
                                 results)]
                 [:> js/Recharts.ResponsiveContainer
                  [:> js/Recharts.LineChart {:data points}
-                  [:> js/Recharts.XAxis {:dataKey "commit-timestamp"
-                                         :label "meow"}]
-                  [:> js/Recharts.YAxis {:label "ms"}]
+                  [:> js/Recharts.XAxis {:dataKey "commit-timestamp"}]
+                  [:> js/Recharts.YAxis]
                   [:> js/Recharts.CartesianGrid {:strokeDasharray "3 3"}]
                   [:> js.Recharts.Tooltip {:isAnimationActive false}]
                   [:> js/Recharts.Legend]
