@@ -20,7 +20,7 @@
 (defn sh! [& args]
   (let [result (apply clojure.java.shell/sh args)
         exit (:exit result)]
-    (assert (zero? exit) (str "error " exit ": " args))
+    (assert (zero? exit) (str "error " exit ": " args " -- " (:err result)))
     result))
 
 (defn checkout! [commit]
