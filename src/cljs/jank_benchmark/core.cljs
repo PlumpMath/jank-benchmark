@@ -15,7 +15,6 @@
 ;; -------------------------
 ;; Views
 
-; TODO: Allow interactive tweaking of this (put it in a ratom)
 (def views (reagent/atom [[:tests]
                           [:empty-compile :empty-run]
                           [:fib-compile :fib-run-40]]))
