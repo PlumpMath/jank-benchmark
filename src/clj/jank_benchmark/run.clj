@@ -48,7 +48,8 @@
         sh-result (sh! "lein" "with-profile" "benchmark" "run" :dir jank-dir)
         _ (println (str commit " - Storing results"))
         data (read-string (:out sh-result))]
-    (swap! current-data #(->> (conj % data)
+    (swap! current-data #(->> (assoc data :commit commit)
+                              (conj %)
                               (sort-by :commit-timestamp)))
     (write-data @current-data)
     data))
