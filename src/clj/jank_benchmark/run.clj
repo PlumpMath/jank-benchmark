@@ -47,6 +47,7 @@
             deps (sh! "lein" "with-profile" "benchmark" "deps" :dir jank-dir)
             sh-result (sh! "lein" "with-profile" "benchmark" "run" :dir jank-dir)
             _ (println (str commit " - Storing results"))
+            _ (println (str commit " - " (:out sh-result)))
             data (read-string (:out sh-result))]
         (swap! current-data #(->> (assoc data :commit commit)
                                   (conj %)
