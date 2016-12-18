@@ -67,7 +67,8 @@
       [:div
        [:div {:class "input"}
         [:textarea {:style {:width "100%"
-                            :height "20%"}
+                            :height "20%"
+                            :font-size 20}
                     :default-value (write @views :stream nil)
                     :on-input parse-input}]]
 
