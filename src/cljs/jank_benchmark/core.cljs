@@ -71,7 +71,9 @@
                     :default-value (write @views :stream nil)
                     :on-input parse-input}]]
 
-       [:div {:class "grid"}
+       [:div {:class "grid"
+              :style {:margin 10
+                      :padding 10}}
         [:> (js/ReactGridLayout.WidthProvider js/ReactGridLayout)
          {:className "layout"
           :layout @layout
