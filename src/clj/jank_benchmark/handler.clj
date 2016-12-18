@@ -31,7 +31,6 @@
 (defroutes app-routes
   (GET "/" [] (loading-page))
   (GET "/api/stats" [] (response @run/current-data))
-  ; TODO: Update to use Github's format
   (POST "/api/run" {body :body} (response
                                   (run/run! (json/read-str (slurp body)
                                                            :key-fn keyword))))
