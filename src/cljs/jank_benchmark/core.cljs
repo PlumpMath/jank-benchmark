@@ -75,7 +75,6 @@
         [:> (js/ReactGridLayout.WidthProvider js/ReactGridLayout)
          {:className "layout"
           :layout @layout
-          :onLayoutChange #(reset! layout %)
           :margin cell-margin
           :cols grid-cols
           :rowHeight row-height}
