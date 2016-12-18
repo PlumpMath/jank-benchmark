@@ -89,7 +89,6 @@
                     ; and just show the value as 0 for that.
                     valid-points (filter #(every? some? ((apply juxt v) %))
                                          all-points)]
-                (pprint [v valid-points])
                 [:> js/Recharts.ResponsiveContainer
                  [:> js/Recharts.LineChart {:data valid-points}
                   [:> js/Recharts.XAxis {:dataKey "commit-timestamp"}]
