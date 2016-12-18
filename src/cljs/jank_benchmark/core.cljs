@@ -19,7 +19,7 @@
                           [:empty-compile :empty-run]
                           [:fib-compile :fib-run-40]]))
 
-(def grid-cols 12)
+(def grid-cols 9)
 (def row-height 150)
 
 (def cell-width 3)
