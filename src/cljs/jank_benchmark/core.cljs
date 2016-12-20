@@ -58,7 +58,11 @@
 
 ; TODO: Show queue
 (defn home-page []
-  (let [results (map #(-> %
+  [:div
+   (for [task @poll/queue]
+     (let [hashes (map #(subs % 0 7) ((juxt :before :after) task))]
+       [:a {:href (:compare task)} (str (first hashes) "..." (second hashes))]))
+   (let [results (map #(-> %
                           :results
                           (assoc :commit-timestamp
                                  (format-timestamp (:commit-timestamp %))))
@@ -105,7 +109,7 @@
                                           :key (str i "-" k)
                                           :dataKey k
                                           :isAnimationActive false}])]])])
-           @views)]]])))
+           @views)]]]))])
 
 (defn about-page []
   [:div [:h2 "About jank-benchmark!"]
