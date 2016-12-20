@@ -5,7 +5,7 @@
             [clojure.pprint :refer [pprint]]))
 
 (def queue (atom []))
-(def runner-sleep-ms 1000)
+(def runner-sleep-ms 5000)
 (def data-file "stored-data")
 
 (defn read-data []
