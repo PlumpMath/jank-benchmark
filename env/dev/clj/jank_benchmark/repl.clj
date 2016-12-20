@@ -1,10 +1,12 @@
 (ns jank-benchmark.repl
+  (:require [jank-benchmark.run :as run])
   (:use jank-benchmark.handler
         figwheel-sidecar.repl-api
         ring.server.standalone
         [ring.middleware file-info file]))
 
 (defonce server (atom nil))
+(def runner (future (run/run-queue!)))
 
 (defn get-handler []
   ;; #'app expands to (var app) so that when we reload our code,
