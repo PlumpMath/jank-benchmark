@@ -10,7 +10,7 @@
 (def queue (reagent/atom {}))
 (def rate-ms 1000)
 
-(defn get-data! []
+(defn- get-data! []
   (go
     (let [reply-js (<! (http/get "/api/stats"))
           reply (-> (js/JSON.parse (:body reply-js))
