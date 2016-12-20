@@ -4,6 +4,8 @@
             [config.core :refer [env]]
             [clojure.pprint :refer [pprint]]))
 
+(def queue (atom []))
+(def runner-sleep-ms 1000)
 (def data-file "stored-data")
 
 (defn read-data []
@@ -52,5 +54,28 @@
         (swap! current-data #(->> (assoc data :commit commit)
                                   (conj %)
                                   (sort-by :commit-timestamp)))
-        (write-data @current-data)
-        data))))
+        (write-data @current-data)))))
+
+(defn enqueue! [request]
+  (swap! queue
+         #(let [commit (:after request)
+                new-request (assoc request :running? false)]
+            (if (or (some (comp #{commit} :commit) @current-data)
+                    (some (comp #{commit} :after) %))
+              ; Already queued
+              %
+              (conj % new-request)))))
+
+(defonce runner
+  (future (fn []
+            (when (not-empty @queue)
+              (swap! queue assoc-in [0 :running?] true)
+              (try
+                (run! (first @queue))
+                (catch Exception e
+                  (println (str "Exception: " e)))
+                (finally
+                  ; Pop from the queue
+                  (swap! queue subvec 1))))
+            (Thread/sleep runner-sleep-ms)
+            (recur))))
