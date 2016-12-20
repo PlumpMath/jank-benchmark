@@ -58,10 +58,13 @@
 
 ; TODO: Show queue
 (defn home-page []
+  ; TODO: Pull these parts out into separate functions
   [:div
-   (for [task @poll/queue]
+   [:ul
+    (for [task @poll/queue]
      (let [hashes (map #(subs % 0 7) ((juxt :before :after) task))]
-       [:a {:href (:compare task)} (str (first hashes) "..." (second hashes))]))
+       [:li [:a {:href (:compare task)}
+             (str (first hashes) " ... " (second hashes))]]))]
    (let [results (map #(-> %
                           :results
                           (assoc :commit-timestamp
