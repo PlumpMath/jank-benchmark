@@ -51,7 +51,9 @@
             _ (println (str commit " - Storing results"))
             _ (println (str commit " - " (:out sh-result)))
             data (read-string (:out sh-result))]
-        (swap! current-data #(->> (assoc data :commit commit)
+        (swap! current-data #(->> (assoc data
+                                         :commit commit
+                                         :request request)
                                   (conj %)
                                   (sort-by :commit-timestamp)))
         (write-data @current-data)))))
