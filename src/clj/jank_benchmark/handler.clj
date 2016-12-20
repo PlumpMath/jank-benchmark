@@ -27,10 +27,15 @@
       [:h3 "Loading..."]]
      (include-js "/js/app.js")]))
 
+(defn stats []
+  ; TODO: Package system information here, not in each result
+  {:results @run/current-data
+   :queue @run/queue})
+
 ; TODO: Return good errors on failure
 (defroutes app-routes
   (GET "/" [] (loading-page))
-  (GET "/api/stats" [] (response @run/current-data))
+  (GET "/api/stats" [] (response (stats)))
   (POST "/api/run" {body :body} (response
                                   (run/enqueue! (json/read-str (slurp body)
                                                                :key-fn keyword))))
