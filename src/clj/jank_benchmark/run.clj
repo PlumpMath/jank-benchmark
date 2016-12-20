@@ -66,16 +66,15 @@
               %
               (conj % new-request)))))
 
-(defonce runner
-  (future (fn []
-            (when (not-empty @queue)
-              (swap! queue assoc-in [0 :running?] true)
-              (try
-                (run! (first @queue))
-                (catch Exception e
-                  (println (str "Exception: " e)))
-                (finally
-                  ; Pop from the queue
-                  (swap! queue subvec 1))))
-            (Thread/sleep runner-sleep-ms)
-            (recur))))
+(defn run-queue! []
+  (when (not-empty @queue)
+    (swap! queue assoc-in [0 :running?] true)
+    (try
+      (run! (first @queue))
+      (catch Exception e
+        (println (str "Exception: " e)))
+      (finally
+        ; Pop from the queue
+        (swap! queue subvec 1))))
+  (Thread/sleep runner-sleep-ms)
+  (recur))

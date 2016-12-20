@@ -28,13 +28,12 @@
      (include-js "/js/app.js")]))
 
 ; TODO: Return good errors on failure
-; TODO: Return instantly and push task into queue; return queue as part of stats request
 (defroutes app-routes
   (GET "/" [] (loading-page))
   (GET "/api/stats" [] (response @run/current-data))
   (POST "/api/run" {body :body} (response
-                                  (run/run! (json/read-str (slurp body)
-                                                           :key-fn keyword))))
+                                  (run/enqueue! (json/read-str (slurp body)
+                                                               :key-fn keyword))))
   (resources "/")
   (not-found "Not Found"))
 
