@@ -7,6 +7,7 @@
   (:require-macros [cljs.core.async.macros :refer [go]]))
 
 (def data (reagent/atom {}))
+(def queue (reagent/atom {}))
 (def rate-ms 1000)
 
 (defn get-data! []
@@ -15,8 +16,11 @@
           reply (-> (js/JSON.parse (:body reply-js))
                     js->clj
                     util/keywordify)]
-      (when (not= reply @data)
-        (reset! data reply)))))
+      ; TODO: helper for this
+      (when (not= (:results reply) @data)
+        (reset! data (:results reply)))
+      (when (not= (:queue reply) @queue)
+        (reset! queue (:queue reply))))))
 
 (defn init! []
   (js/setInterval get-data! rate-ms)
