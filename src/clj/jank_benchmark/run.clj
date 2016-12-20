@@ -40,7 +40,7 @@
 
 (defn run! [request]
   ; TODO: spec/conform request; have spec check for master branch
-  (let [commit (:after request)]
+  (let [commit (:commit request)]
     (if (some (comp #{commit} :commit) @current-data)
       (println (str commit " - Already ran this benchmark"))
       (let [jank-dir (checkout! commit)
@@ -59,11 +59,11 @@
 (defn enqueue! [request]
   (swap! queue
          #(let [commit (:after request)
-                new-request (assoc request :running? false)]
-            (if (or (some (comp #{commit} :commit) @current-data)
-                    (some (comp #{commit} :after) %))
-              ; Already queued
-              %
+                new-request (assoc request
+                                   :commit commit
+                                   :running? false)]
+            (if (some (comp #{commit} :commit) (into @current-data %))
+              % ; Already queued
               (conj % new-request)))))
 
 (defn run-queue! []
