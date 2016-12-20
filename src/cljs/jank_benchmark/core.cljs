@@ -5,8 +5,6 @@
               [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]
               [accountant.core :as accountant]
-              [cljs-time.format :as time-format]
-              [cljs-time.coerce :as time-coerce]
               [cljsjs.recharts]
               [cljsjs.react-grid-layout]
               [cljs.reader :as reader]
@@ -52,10 +50,6 @@
         ; Don't change anything; the input isn't valid
         true))))
 
-(def formatter (time-format/formatter "MMM d"))
-(defn format-timestamp [stamp]
-  (time-format/unparse formatter (time-coerce/from-long stamp)))
-
 (defn home-page []
   ; TODO: Pull these parts out into separate functions
   [:div
@@ -67,7 +61,7 @@
    (let [results (map #(-> %
                           :results
                           (assoc :commit-timestamp
-                                 (format-timestamp (:commit-timestamp %))))
+                                 (time/format-timestamp (:commit-timestamp %))))
                      @poll/data)]
     (if (empty? results)
       [:div "no results"]
