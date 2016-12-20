@@ -27,6 +27,7 @@
 
 (defn generate-layout
   [vs]
+  ; TODO: Handle resizing
   (map-indexed (fn [i v]
                  {:i (str i)
                   :x (* cell-width (mod i cell-cols))
