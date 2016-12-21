@@ -10,7 +10,7 @@ then
   exit 1
 fi
 
-json="{\"ref\": \"refs/heads/master\", \"after\": \"$2\"}"
+json="{\"ref\": \"refs/heads/master\", \"before\": \"$2\", \"after\": \"$2\"}"
 
 curl -X POST \
   -H "Content-Type: application/json" \
