@@ -34,10 +34,11 @@
 ;; Views
 
 (defn div []
-  [:div
-   [:ul
-    (for [task @queue]
-      (let [hashes (map #(subs % 0 7) ((juxt :before :after) task))]
-        [:li
-         [:a {:href (:compare task)}
-          (str (first hashes) " ... " (second hashes))]]))]])
+  (when (not-empty @queue)
+    [:div "Queued:"
+     [:ul
+      (for [task @queue]
+        (let [hashes (map #(subs % 0 7) ((juxt :before :after) task))]
+          [:li
+           [:a {:href (:compare task)}
+            (str (first hashes) " ... " (second hashes))]]))]]))

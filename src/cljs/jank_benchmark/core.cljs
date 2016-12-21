@@ -10,7 +10,7 @@
 ;; Views
 
 (defn home-page []
-  [:div poll/div grid/div])
+  [:div (poll/div) (grid/div)])
 
 (defn about-page []
   [:div [:h2 "About jank-benchmark!"]
