@@ -69,21 +69,14 @@
               (conj % new-request)))))
 
 (defn run-queue! []
-  (println "Checking")
   (when (not-empty @queue)
-    (println "Not empty: " @queue)
     (swap! queue assoc-in [0 :running?] true)
-    (println "Marked as running: " @queue)
     (try
-      (println "Running " (first @queue))
       (run! (first @queue))
-      (catch Object e
+      (catch Throwable e ; Assertion failures aren't exceptions
         (println (str "Exception: " e)))
       (finally
-        (println "Popping: " (first @queue))
         ; Pop from the queue
-        (swap! queue subvec 1)
-        (println "Popped: " @queue))))
-  (println "Sleeping")
+        (swap! queue subvec 1))))
   (Thread/sleep runner-sleep-ms)
   (recur))
