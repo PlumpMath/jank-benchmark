@@ -35,10 +35,12 @@
 
 (defn div []
   (when (not-empty @queue)
-    [:div "Queued:"
+    [:div
      [:ul
       (for [task @queue]
         (let [hashes (map #(subs % 0 7) ((juxt :before :after) task))]
           [:li
            [:a {:href (:compare task)}
-            (str (first hashes) " ... " (second hashes))]]))]]))
+            (str (first hashes) " ... " (second hashes)
+                 (when (:running? task)
+                   " (running)"))]]))]]))
