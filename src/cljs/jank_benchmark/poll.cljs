@@ -6,6 +6,9 @@
             [clojure.pprint :refer [pprint]])
   (:require-macros [cljs.core.async.macros :refer [go]]))
 
+;; -------------------------
+;; Data
+
 (def data (reagent/atom {}))
 (def queue (reagent/atom {}))
 (def rate-ms 1000)
@@ -26,6 +29,9 @@
   (js/setInterval get-data! rate-ms)
   ; Rather than waiting for the first call, do it immediately
   (get-data!))
+
+;; -------------------------
+;; Views
 
 (defn div []
   [:div

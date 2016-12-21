@@ -8,6 +8,9 @@
             [cljs.reader :as reader]
             [clojure.pprint :refer [pprint write]]))
 
+;; -------------------------
+;; Data
+
 (def views (reagent/atom [[:tests]
                           [:empty-compile :empty-run]
                           [:fib-compile :fib-run-40]]))
@@ -45,6 +48,9 @@
       (catch js/Object e
         ; Don't change anything; the input isn't valid
         true))))
+
+;; -------------------------
+;; Views
 
 (defn div []
   (let [results (map #(-> %
@@ -94,5 +100,4 @@
                                           :key (str i "-" k)
                                           :dataKey k
                                           :isAnimationActive false}])]])])
-           @views)]]]))
-  )
+           @views)]]])))
