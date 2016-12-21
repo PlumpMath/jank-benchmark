@@ -10,14 +10,7 @@
 ;; Views
 
 (defn home-page []
-  ; TODO: Pull these parts out into separate functions
-  [:div
-   [:ul
-    (for [task @poll/queue]
-      (let [hashes (map #(subs % 0 7) ((juxt :before :after) task))]
-        [:li [:a {:href (:compare task)}
-              (str (first hashes) " ... " (second hashes))]]))]
-   grid/div])
+  [:div poll/div grid/div])
 
 (defn about-page []
   [:div [:h2 "About jank-benchmark!"]

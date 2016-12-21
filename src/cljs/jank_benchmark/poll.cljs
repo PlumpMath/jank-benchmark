@@ -26,3 +26,12 @@
   (js/setInterval get-data! rate-ms)
   ; Rather than waiting for the first call, do it immediately
   (get-data!))
+
+(defn div []
+  [:div
+   [:ul
+    (for [task @queue]
+      (let [hashes (map #(subs % 0 7) ((juxt :before :after) task))]
+        [:li
+         [:a {:href (:compare task)}
+          (str (first hashes) " ... " (second hashes))]]))]])
