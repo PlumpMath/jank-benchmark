@@ -6,11 +6,14 @@
             [clojure.pprint :refer [pprint]])
   (:require-macros [cljs.core.async.macros :refer [go]]))
 
+;; -------------------------
+;; Data
+
 (def data (reagent/atom {}))
 (def queue (reagent/atom {}))
 (def rate-ms 1000)
 
-(defn get-data! []
+(defn- get-data! []
   (go
     (let [reply-js (<! (http/get "/api/stats"))
           reply (-> (js/JSON.parse (:body reply-js))
@@ -26,3 +29,16 @@
   (js/setInterval get-data! rate-ms)
   ; Rather than waiting for the first call, do it immediately
   (get-data!))
+
+;; -------------------------
+;; Views
+
+(defn div []
+  (when (not-empty @queue)
+    [:div "Queued:"
+     [:ul
+      (for [task @queue]
+        (let [hashes (map #(subs % 0 7) ((juxt :before :after) task))]
+          [:li
+           [:a {:href (:compare task)}
+            (str (first hashes) " ... " (second hashes))]]))]]))
