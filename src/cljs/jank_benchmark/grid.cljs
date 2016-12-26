@@ -90,7 +90,8 @@
                                          all-points)]
                 [:> js/Recharts.ResponsiveContainer
                  [:> js/Recharts.LineChart {:data valid-points}
-                  [:> js/Recharts.XAxis {:dataKey "commit-timestamp"}]
+                  ;[:> js/Recharts.XAxis {:dataKey "commit-timestamp"}]
+                  [:> js/Recharts.XAxis]
                   [:> js/Recharts.YAxis]
                   [:> js/Recharts.CartesianGrid {:strokeDasharray "3 3"}]
                   [:> js.Recharts.Tooltip {:isAnimationActive false}]
